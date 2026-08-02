@@ -1,7 +1,9 @@
 # UserAuthSystem
 
-A simple Java Servlet + JSP based user authentication system built using Eclipse and Tomcat.  
-This project demonstrates **user registration, login, session management, and interactive JSP pages** with success/failure handling.
+A simple Java Servlet + JSP based user authentication system built using Eclipse and Tomcat.
+
+This project demonstrates user registration, secure login with BCrypt password hashing, 
+session management and interactive JSP pages with success/failure handling.
 
 ---
 
