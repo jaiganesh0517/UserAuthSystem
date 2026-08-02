@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 
 @WebServlet("/LoginServlet")
 public class LoginServlet extends HttpServlet {
@@ -17,9 +19,10 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
+       
 
         Model user = new Model();
-        boolean isValid = user.login(email, password);
+        boolean isValid = user.login(email,password);
 
         if (isValid) {
             HttpSession session = request.getSession();

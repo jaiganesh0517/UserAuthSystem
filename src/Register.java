@@ -1,5 +1,5 @@
 
-
+import org.mindrot.jbcrypt.BCrypt;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,11 +17,12 @@ public class Register extends HttpServlet {
 		String name = request.getParameter("name");
 		String city=request.getParameter("city");
 		String password=request.getParameter("password");
+		String hashedPassword= BCrypt.hashpw(password, BCrypt.gensalt(12));
 		String email =request.getParameter("email");
 		Model model = new Model();
 		model.setName(name);
 		model.setCity(city);
-		model.setPassword(password);
+		model.setPassword(hashedPassword);
 		model.setEmailId(email);
 		
 		
@@ -36,7 +37,9 @@ public class Register extends HttpServlet {
 		else
 		{
 			response.sendRedirect("/RegistrationAppMVC/succes.jsp");
-		}
+		}	
+
+
 		
 	}
 

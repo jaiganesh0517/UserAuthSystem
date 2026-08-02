@@ -4,6 +4,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 public class Model 
 {
     private String Name;
@@ -68,27 +70,33 @@ public class Model
 		
 	}
 	public boolean login(String emailId, String password) {
-        boolean isValidUser = false;
-        try {
-            connect = JdbcUtil.getDBConnection();
-            String sql = "SELECT * FROM personalinfo WHERE EmailId=? AND Password=?";
-            pstmnt = connect.prepareStatement(sql);
-            pstmnt.setString(1, emailId);
-            pstmnt.setString(2, password);
-            rs  = pstmnt.executeQuery();
+	    boolean isValidUser = false;
+	    try {
+	        connect = JdbcUtil.getDBConnection();
+	        String sql = "SELECT * FROM personalinfo WHERE EmailId=?";
+	        pstmnt = connect.prepareStatement(sql);
+	        pstmnt.setString(1, emailId);
+	        rs = pstmnt.executeQuery();
 
-            if (rs.next()) {
-                isValidUser = true; // user found
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                JdbcUtil.closeResources(connect, pstmnt);
-            } catch (SQLException | IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return isValidUser;
-    }
+	        if (rs.next()) {                              
+	            String storedHash = rs.getString("Password"); 
+	            
+	            boolean isMatch = BCrypt.checkpw(password, storedHash);
+	            if (isMatch) {
+	                isValidUser = true;
+	            }
+	        }
+	       
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        try {
+	            JdbcUtil.closeResources(connect, pstmnt);
+	        } catch (SQLException | IOException e) {
+	            e.printStackTrace();
+	        }
+	    }
+	    return isValidUser;
+	}
 }
