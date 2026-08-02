@@ -66,7 +66,6 @@ CREATE TABLE personalinfo (
 
 
 🔒 Future Improvements
- * Password hashing (e.g., BCrypt) for better security
 
  * Client‑side validation with JavaScript
 
